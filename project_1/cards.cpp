@@ -151,6 +151,15 @@ public:
             return head->data;
         return T();
     }
+
+    void rotateHeadTail()
+    {
+        if (head && head->next != head)
+        {
+            head = head->next;
+            tail = tail->next;
+        }
+    }
 };
 
 // Deck Class (Uses CircularLinkedList<Card>)
@@ -210,6 +219,11 @@ public:
         cards.display();
     }
 
+    void rotateDeck()
+    {
+        cards.rotateHeadTail();
+    }
+
     int remainingCards()
     {
         return cards.getSize();
@@ -221,121 +235,29 @@ int main()
 {
     Deck deck;
     deck.initializeDeck();
+
+    cout << "Original Deck\n";
+    deck.showDeck();
+
+    cout << "\nShuffling Deck\n";
     deck.shuffleDeck();
 
-    string player1, player2;
-    int player1Score = 0, player2Score = 0;
-    int rounds = 5;
+    cout << "Shuffled Deck\n";
+    deck.showDeck();
 
-    cout << "Card Guessing Game\n";
-    cout << "Enter Player 1 name: ";
-    getline(cin, player1);
-    cout << "Enter Player 2 name: ";
-    getline(cin, player2);
+    random_device rd;
+    mt19937 g(rd());
+    uniform_int_distribution<> dis(1, 52);
+    int randomRotations = dis(g);
 
-    cout << "\nGame Rules\n";
-    cout << "- Players take turns guessing the rank and suit of the next card\n";
-    cout << "- 1 point for correct rank, 1 point for correct suit\n";
-    cout << "- Game lasts 5 rounds\n\n";
-
-    cout << "Preview: First 5 Cards\n";
-    for (int i = 0; i < 5; i++)
+    cout << "\nRotating deck " << randomRotations << " times\n";
+    for (int i = 0; i < randomRotations; i++)
     {
-        deck.drawCard();
+        deck.rotateDeck();
     }
 
-    cout << "\nGame Starts Now\n\n";
-
-    for (int round = 1; round <= rounds; round++)
-    {
-        cout << "Round " << round << "\n";
-        cout << "Remaining cards: " << deck.remainingCards() << endl;
-
-        // Player 1's turn
-        cout << "\n"
-             << player1 << "'s turn:\n";
-        cout << "Guess the rank (2-10, Jack, Queen, King, Ace): ";
-        string guessRank1;
-        getline(cin, guessRank1);
-        cout << "Guess the suit (Hearts, Diamonds, Clubs, Spades): ";
-        string guessSuit1;
-        getline(cin, guessSuit1);
-
-        Card actual = deck.getFront();
-        cout << "The card is: " << actual.toString() << endl;
-
-        if (actual.toString().find(guessRank1) != string::npos)
-        {
-            cout << "Correct rank\n";
-            player1Score++;
-        }
-        else
-        {
-            cout << "Wrong rank\n";
-        }
-
-        if (actual.toString().find(guessSuit1) != string::npos)
-        {
-            cout << "Correct suit\n";
-            player1Score++;
-        }
-        else
-        {
-            cout << "Wrong suit\n";
-        }
-
-        deck.drawCard();
-
-        // Player 2's turn
-        cout << "\n"
-             << player2 << "'s turn:\n";
-        cout << "Guess the rank (2-10, Jack, Queen, King, Ace): ";
-        string guessRank2;
-        getline(cin, guessRank2);
-        cout << "Guess the suit (Hearts, Diamonds, Clubs, Spades): ";
-        string guessSuit2;
-        getline(cin, guessSuit2);
-
-        actual = deck.getFront();
-        cout << "The card is: " << actual.toString() << endl;
-
-        if (actual.toString().find(guessRank2) != string::npos)
-        {
-            cout << "Correct rank\n";
-            player2Score++;
-        }
-        else
-        {
-            cout << "Wrong rank\n";
-        }
-
-        if (actual.toString().find(guessSuit2) != string::npos)
-        {
-            cout << "Correct suit\n";
-            player2Score++;
-        }
-        else
-        {
-            cout << "Wrong suit\n";
-        }
-
-        deck.drawCard();
-
-        cout << "\nCurrent Scores - " << player1 << ": " << player1Score << " | " << player2 << ": " << player2Score << endl;
-    }
-
-    cout << "\nFinal Scores\n";
-    cout << player1 << ": " << player1Score << endl;
-    cout << player2 << ": " << player2Score << endl;
-
-    if (player1Score > player2Score)
-        cout << "\n"
-             << player1 << " wins\n";
-    else if (player2Score > player1Score)
-        cout << "\n"
-             << player2 << " wins\n";
-    else
-        cout << "\nIt's a tie\n";
+    cout << "\nDeck After Rotation\n";
+    deck.showDeck();
 
     return 0;
 }
