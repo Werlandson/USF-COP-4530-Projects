@@ -227,28 +227,28 @@ int main()
     int player1Score = 0, player2Score = 0;
     int rounds = 5;
 
-    cout << "===== Card Guessing Game =====\n";
+    cout << "Card Guessing Game\n";
     cout << "Enter Player 1 name: ";
     getline(cin, player1);
     cout << "Enter Player 2 name: ";
     getline(cin, player2);
 
-    cout << "\n===== Game Rules =====\n";
+    cout << "\nGame Rules\n";
     cout << "- Players take turns guessing the rank and suit of the next card\n";
     cout << "- 1 point for correct rank, 1 point for correct suit\n";
     cout << "- Game lasts 5 rounds\n\n";
 
-    cout << "===== Preview: First 5 Cards =====\n";
+    cout << "Preview: First 5 Cards\n";
     for (int i = 0; i < 5; i++)
     {
         deck.drawCard();
     }
 
-    cout << "\n===== Game Starts Now =====\n\n";
+    cout << "\nGame Starts Now\n\n";
 
     for (int round = 1; round <= rounds; round++)
     {
-        cout << "===== Round " << round << " =====\n";
+        cout << "Round " << round << "\n";
         cout << "Remaining cards: " << deck.remainingCards() << endl;
 
         // Player 1's turn
@@ -266,7 +266,7 @@ int main()
 
         if (actual.toString().find(guessRank1) != string::npos)
         {
-            cout << "Correct rank!\n";
+            cout << "Correct rank\n";
             player1Score++;
         }
         else
@@ -276,7 +276,7 @@ int main()
 
         if (actual.toString().find(guessSuit1) != string::npos)
         {
-            cout << "Correct suit!\n";
+            cout << "Correct suit\n";
             player1Score++;
         }
         else
@@ -301,7 +301,7 @@ int main()
 
         if (actual.toString().find(guessRank2) != string::npos)
         {
-            cout << "Correct rank!\n";
+            cout << "Correct rank\n";
             player2Score++;
         }
         else
@@ -311,7 +311,7 @@ int main()
 
         if (actual.toString().find(guessSuit2) != string::npos)
         {
-            cout << "Correct suit!\n";
+            cout << "Correct suit\n";
             player2Score++;
         }
         else
@@ -324,16 +324,18 @@ int main()
         cout << "\nCurrent Scores - " << player1 << ": " << player1Score << " | " << player2 << ": " << player2Score << endl;
     }
 
-    cout << "\n===== FINAL SCORES =====\n";
+    cout << "\nFinal Scores\n";
     cout << player1 << ": " << player1Score << endl;
     cout << player2 << ": " << player2Score << endl;
 
     if (player1Score > player2Score)
-        cout << "\n🎉 " << player1 << " wins!\n";
+        cout << "\n"
+             << player1 << " wins\n";
     else if (player2Score > player1Score)
-        cout << "\n🎉 " << player2 << " wins!\n";
+        cout << "\n"
+             << player2 << " wins\n";
     else
-        cout << "\n🤝 It's a tie!\n";
+        cout << "\nIt's a tie\n";
 
     return 0;
 }
