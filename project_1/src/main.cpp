@@ -1,22 +1,19 @@
 #include <SFML/Graphics.hpp>
+#include "Window.hpp"
+#include "Characters.hpp"
+#include "CircleList.hpp"
+#include "Paths.hpp"
+#include <memory>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML Test");
+    Window window(800, 600, "Patrick Star Circular Path", 60);
 
-    while (window.isOpen())
-    {
-        while (auto eventOpt = window.pollEvent())
-        {
-            sf::Event event = *eventOpt;
+    auto path = createCircularPath(400.f, 300.f, 200.f, 500);
 
-            if (event.is<sf::Event::Closed>())
-            {
-                window.close();
-            }
-        }
+    auto patrick = std::make_shared<PatrickStar>(path.getCursor());
+    window.addObject(patrick);
 
-        window.clear(sf::Color::White);
-        window.display();
-    }
+    window.run();
+    return 0;
 }
