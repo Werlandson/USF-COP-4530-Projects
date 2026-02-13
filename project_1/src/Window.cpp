@@ -33,9 +33,9 @@ void Window::run()
 
         // Draw objects
         window.clear(sf::Color::White);
-        for (auto &obj : objects)
+        for (auto &chara : characters)
         {
-            obj->draw(window);
+            chara->draw(window);
         }
         window.display();
     }

@@ -7,7 +7,7 @@
 class Window
 {
 private:
-    sf : RenderWindow window;
+    sf::RenderWindow window;
     std::vector<std::shared_ptr<Character>> characters;
     float frameRate;
 
