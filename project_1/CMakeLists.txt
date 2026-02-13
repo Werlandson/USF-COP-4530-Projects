@@ -9,6 +9,10 @@ find_package(SFML REQUIRED COMPONENTS Graphics Window System)
 
 add_executable(app
     src/main.cpp
+    src/Window.cpp
+    src/Paths.cpp
+    src/Characters.cpp
+    src/CircleList.cpp
 )
 
 target_link_libraries(app
