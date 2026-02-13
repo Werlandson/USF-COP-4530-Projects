@@ -1,30 +1,4 @@
-#include <iostream>
-using namespace std;
-
-template <typename T>
-class CNode
-{
-public:
-    T elem;
-    CNode *next;
-};
-
-template <typename T>
-class CircleList
-{
-public:
-    CircleList();
-    ~CircleList();
-    bool empty() const;
-    const T &back() const;
-    const T &front() const;
-    void advance();
-    void add(const T &elem);
-    void remove();
-
-private:
-    CNode<T> *cursor;
-};
+#include "CircleList.hpp"
 
 template <typename T>
 CircleList<T>::CircleList() : cursor(NULL) {}
@@ -42,6 +16,11 @@ bool CircleList<T>::empty() const
     return cursor == NULL;
 }
 
+template <typename T>
+CNode<T> *CircleList<T>::getCursor() const
+{
+    return cursor;
+}
 template <typename T>
 const T &CircleList<T>::back() const
 {
@@ -89,3 +68,5 @@ void CircleList<T>::remove()
 
     delete old;
 }
+
+template class CircleList<sf::Vector2<float>>;
