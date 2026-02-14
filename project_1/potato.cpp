@@ -6,52 +6,46 @@ using namespace std;
 class Player
 {
 private:
-    int id;
     string name;
 
 public:
-    Player() : id(0), name("") {}
+    // Constructor: Initialize a player with a name
+    Player(const string &pname) : name(pname) {}
 
-    Player(int pid, const string &pname) : id(pid), name(pname) {}
-
-    int getId() const { return id; }
-    string getName() const { return name; }
-
-    // Return player's name for display
+    // Return player's name as a string
     string toString() const
     {
         return name;
     }
 };
 
-// Template class
+// Circular Linked List class using templates
 template <typename T>
 class CircularLinkedList
 {
 private:
+    // Node structure for the linked list
     struct Node
     {
-        T data;
-        Node *next;
+        T data;     // Stores the element
+        Node *next; // Points to the next node
         Node(const T &d) : data(d), next(nullptr) {}
     };
 
-    Node *tail;
-    int size;
+    Node *tail; // Points to the last node in the circular list
+    int size;   // Tracks the number of elements
 
 public:
+    // Constructor: Initialize empty list
     CircularLinkedList() : tail(nullptr), size(0) {}
 
+    // Check if the list is empty
     bool isEmpty() const
     {
         return tail == nullptr;
     }
 
-    int getSize() const
-    {
-        return size;
-    }
-
+    // Add an element to the end of the list
     void addElement(const T &data)
     {
         Node *newNode = new Node(data);
@@ -59,7 +53,7 @@ public:
         if (isEmpty())
         {
             tail = newNode;
-            tail->next = tail;
+            tail->next = tail; // Point to itself for circular structure
         }
         else
         {
@@ -70,6 +64,7 @@ public:
         size++;
     }
 
+    // Remove the next element in the circular order
     T removeNext(Node *&current)
     {
         if (size == 1)
@@ -96,6 +91,7 @@ public:
         return removedData;
     }
 
+    // Play the hot potato game
     T playGame(int passes)
     {
         if (isEmpty())
@@ -103,13 +99,16 @@ public:
 
         Node *current = tail;
 
+        // Continue eliminating until one player remains
         while (size > 1)
         {
+            // Pass the potato 'passes' times
             for (int i = 0; i < passes - 1; i++)
             {
                 current = current->next;
             }
 
+            // Eliminate the next player
             T eliminated = current->next->data;
             cout << "Eliminated: " << eliminated.toString() << endl;
             removeNext(current);
@@ -119,6 +118,7 @@ public:
         return tail->data;
     }
 
+    // Display all remaining elements in the list
     void printElements() const
     {
         if (isEmpty())
@@ -142,6 +142,7 @@ public:
         cout << endl;
     }
 
+    // Destructor: Free all allocated memory
     ~CircularLinkedList()
     {
         while (!isEmpty())
@@ -153,28 +154,30 @@ public:
 
 int main()
 {
-    // Using the template with Player class
+    // Create a circular linked list to store players
     CircularLinkedList<Player> game;
     int n, k;
 
+    // Get game parameters from user
     cout << "Enter number of players: ";
     cin >> n;
 
     cout << "Enter number of passes before elimination: ";
     cin >> k;
 
-    // Automatically assign Player 1, Player 2, ...
+    // Add players to the game
     for (int i = 1; i <= n; i++)
     {
-        game.addElement(Player(i, "Player " + to_string(i)));
+        game.addElement(Player("Player " + to_string(i)));
     }
 
+    // Display initial game state and play
     cout << "\nStarting Hot Potato Game: \n\n";
-
     game.printElements();
 
     Player winner = game.playGame(k);
 
+    // Display the winner
     cout << "\nWinner is: " << winner.toString() << endl;
 
     return 0;
