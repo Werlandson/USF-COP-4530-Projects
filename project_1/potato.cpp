@@ -143,7 +143,7 @@ int main()
         game.addPlayer("Player " + to_string(i));
     }
 
-    cout << "\nStarting Hot Potato Game...\n\n";
+    cout << "\nStarting Hot Potato Game: \n\n";
 
     game.printPlayers();
 
