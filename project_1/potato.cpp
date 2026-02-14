@@ -2,14 +2,38 @@
 #include <string>
 using namespace std;
 
+// Player class
+class Player
+{
+private:
+    int id;
+    string name;
+
+public:
+    Player() : id(0), name("") {}
+
+    Player(int pid, const string &pname) : id(pid), name(pname) {}
+
+    int getId() const { return id; }
+    string getName() const { return name; }
+
+    // Simple method to return player info as string
+    string toString() const
+    {
+        return name;
+    }
+};
+
+// Template class
+template <typename T>
 class CircularLinkedList
 {
 private:
     struct Node
     {
-        string name;
+        T data;
         Node *next;
-        Node(string n) : name(n), next(nullptr) {}
+        Node(const T &d) : data(d), next(nullptr) {}
     };
 
     Node *tail;
@@ -28,9 +52,9 @@ public:
         return size;
     }
 
-    void addPlayer(const string &name)
+    void addElement(const T &data)
     {
-        Node *newNode = new Node(name);
+        Node *newNode = new Node(data);
 
         if (isEmpty())
         {
@@ -46,11 +70,11 @@ public:
         size++;
     }
 
-    string removeNext(Node *&current)
+    T removeNext(Node *&current)
     {
         if (size == 1)
         {
-            string winner = current->name;
+            T winner = current->data;
             delete current;
             tail = nullptr;
             size = 0;
@@ -58,7 +82,7 @@ public:
         }
 
         Node *temp = current->next;
-        string removedName = temp->name;
+        T removedData = temp->data;
 
         current->next = temp->next;
 
@@ -69,13 +93,13 @@ public:
 
         delete temp;
         size--;
-        return removedName;
+        return removedData;
     }
 
-    string playGame(int passes)
+    T playGame(int passes)
     {
         if (isEmpty())
-            return "No players.";
+            throw runtime_error("No players in list.");
 
         Node *current = tail;
 
@@ -86,15 +110,16 @@ public:
                 current = current->next;
             }
 
-            cout << "Eliminated: " << current->next->name << endl;
+            T eliminated = current->next->data;
+            cout << "Eliminated: " << eliminated.toString() << endl;
             removeNext(current);
-            printPlayers();
+            printElements();
         }
 
-        return tail->name;
+        return tail->data;
     }
 
-    void printPlayers() const
+    void printElements() const
     {
         if (isEmpty())
         {
@@ -110,7 +135,7 @@ public:
         {
             if (!first)
                 cout << ", ";
-            cout << p->name;
+            cout << p->data.toString();
             first = false;
             p = p->next;
         } while (p != start);
@@ -128,7 +153,8 @@ public:
 
 int main()
 {
-    CircularLinkedList game;
+    // Using the template with Player class
+    CircularLinkedList<Player> game;
     int n, k;
 
     cout << "Enter number of players: ";
@@ -140,16 +166,16 @@ int main()
     // Automatically assign Player 1, Player 2, ...
     for (int i = 1; i <= n; i++)
     {
-        game.addPlayer("Player " + to_string(i));
+        game.addElement(Player(i, "Player " + to_string(i)));
     }
 
     cout << "\nStarting Hot Potato Game: \n\n";
 
-    game.printPlayers();
+    game.printElements();
 
-    string winner = game.playGame(k);
+    Player winner = game.playGame(k);
 
-    cout << "\nWinner is: " << winner << endl;
+    cout << "\nWinner is: " << winner.toString() << endl;
 
     return 0;
 }
