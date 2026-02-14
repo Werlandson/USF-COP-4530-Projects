@@ -17,7 +17,7 @@ public:
     int getId() const { return id; }
     string getName() const { return name; }
 
-    // Simple method to return player info as string
+    // Return player's name for display
     string toString() const
     {
         return name;
