@@ -2,8 +2,8 @@
  * Name: Minh Duong, Waylon Erlandson, Long Nguyen
  * Descriptions: Implements a simple hot potato game where a person is eliminated after holding the
  * potato for a given time threshold. The last person standing wins. The program assumes that the first
- * two inputs, number of players and name, are int and string, respectively and does not handle type
- * errors. Additionally, the program assumes that the user is a fair sport and only presses enter when
+ * two inputs, number of players and name, are  an integer greater than 2 and string, respectively and does not handle type
+ * errors or logic errors. Additionally, the program assumes that the user is a fair sport and only presses enter when
  * they are prompted to. If the user preemptively presses enter, the subsequent turn will take approximately
  * zero time, and the user will unfairly win.
  * */
@@ -230,10 +230,10 @@ private:
 
 int main()
 {
-
+    
     Game game;
     string username;
-    int n;
+    unsigned n;
 
     // Get game parameters from user
     cout << "Enter number of players: ";
@@ -252,3 +252,4 @@ int main()
 
     return 0;
 }
+
