@@ -1,7 +1,6 @@
 /*
  * Name: Waylon Erlandson, Duong Minh, Duc Long Nguyen
- * Description: Header file for Restaurant class. Restaurant inherits the shared Company simulation
- * behavior and differentiates itself through arithmetic-problem serving tasks.
+ * Description: Header file for Restaurant class
  * */
 #pragma once
 

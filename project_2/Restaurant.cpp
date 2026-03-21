@@ -1,3 +1,8 @@
+/*
+ * Name: Waylon Erlandson, Duong Minh, Duc Long Nguyen
+ * Description: Restaurant inherits the shared Company simulation behavior and differentiates
+ * itself through arithmetic-problem serving tasks.
+ * */
 #include "Restaurant.h"
 #include <iostream>
 #include <limits>
