@@ -1,8 +1,8 @@
 /*
- * Name: Waylon Erlandson
- * Description: Creates a vector of arithmetic problems for each pair of numbers 1-12 for the addition, subtraction, and multiplication operators
- * and each pair of numbers 1-12 where the first number is divisible by the second for the division operator.
- * */
+ * Names: Waylon Erlandson, Minh Duong, Duc Long Nguyen
+ * Description: Creates a vector of arithmetic problems for numbers 1–12 using +, -, *, and /.
+ * Division problems are only added when the result is a whole number.
+ */
 #include "ArithmeticProblem.h"
 #include <iostream>
 
@@ -11,7 +11,7 @@ using namespace std;
 vector<ArithmeticProblem> createArithmeticProblems()
 {
     vector<ArithmeticProblem> arithmeticProblems;
-    char operators[] = {'+', '*', '-', '/'};
+    char operators[] = {'+', '*', '-', '/'}; // list of operators
 
     for (int i = 1; i < 13; i++)
     {
@@ -23,7 +23,7 @@ vector<ArithmeticProblem> createArithmeticProblems()
                 {
                 case '/':
                 {
-                    // Adds arithmetic problem only if the first operand is divisible by the second.
+                    // only include division if divisible
                     if (i % j == 0)
                     {
                         ArithmeticProblem problem = ArithmeticProblem(i, j, oper, i / j);
@@ -33,18 +33,21 @@ vector<ArithmeticProblem> createArithmeticProblems()
                 }
                 case '*':
                 {
+                    // multiplication problem
                     ArithmeticProblem problem = ArithmeticProblem(i, j, oper, i * j);
                     arithmeticProblems.push_back(problem);
                     break;
                 }
                 case '+':
                 {
+                    // addition problem
                     ArithmeticProblem problem = ArithmeticProblem(i, j, oper, i + j);
                     arithmeticProblems.push_back(problem);
                     break;
                 }
                 case '-':
                 {
+                    // subtraction problem
                     ArithmeticProblem problem = ArithmeticProblem(i, j, oper, i - j);
                     arithmeticProblems.push_back(problem);
                     break;
@@ -54,5 +57,5 @@ vector<ArithmeticProblem> createArithmeticProblems()
         }
     }
 
-    return arithmeticProblems;
+    return arithmeticProblems; // return full list of problems
 }
