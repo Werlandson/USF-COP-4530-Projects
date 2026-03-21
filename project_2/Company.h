@@ -1,5 +1,5 @@
 /*
- * Name: Waylon Erlandson
+ * Names: Waylon Erlandson, Minh Duong, Duc Long Nguyen
  * Description: Parent class for businesses that manage arriving Groups, seating, serving tasks,
  * earnings, and termination conditions. Child classes customize the serving task.
  */
@@ -15,7 +15,7 @@
 class Group
 {
 public:
-    Group();
+    Group(); // creates group with random size/difficulty
     Group(const Group &group);
 
     std::chrono::system_clock::time_point getTimeArrived() const;
@@ -25,7 +25,7 @@ public:
 private:
     int size;
     int difficulty;
-    std::chrono::system_clock::time_point timeArrived;
+    std::chrono::system_clock::time_point timeArrived; // used to track wait time
 };
 
 class Company
@@ -34,28 +34,26 @@ public:
     Company();
     virtual ~Company();
 
-    // Starts the simulation and blocks until the game ends.
-    void startGame();
+    void startGame(); // starts simulation
 
 protected:
-    // Child customization points.
     virtual void printWelcome() = 0;
     virtual void performServiceTask(const Group &group, std::mt19937 &gen) = 0;
 
-    // Allows children to stop the game if needed.
-    void stopGame();
+    void stopGame(); // ends simulation
 
     bool isGameRunning() const;
     float getEarnings() const;
 
 private:
-    void fillTableOpenings();
-    void monitorWaitTimes();
-    void randomArrivalGeneration();
-    void serveTables();
+    void fillTableOpenings();      // move groups from waitingLine to tables
+    void monitorWaitTimes();       // end game if waiting too long
+    void randomArrivalGeneration();// add new groups to queue
+    void serveTables();            // serve groups at tables
 
-    Queue<Group> waitingLine;
-    Queue<Group> tables;
+    Queue<Group> waitingLine; // queue of waiting groups
+    Queue<Group> tables;      // groups being served
+
     float earnings;
     std::atomic<bool> gameIsRunning;
     int tableCapacity;
@@ -65,4 +63,3 @@ private:
     std::thread monitorWaitThread;
     std::thread serveTablesThread;
 };
-
