@@ -1,5 +1,5 @@
 /*
- * Name: Waylon Erlandson
+ * Name: Waylon Erlandson, Duong Minh, Duc Long Nguyen
  * Description: Implementation for Company and Group classes.
  */
 
@@ -115,7 +115,7 @@ void Company::fillTableOpenings()
                 waitingLine.dequeue();
                 tables.enqueue(group);
             }
-            catch (const std::runtime_error &)
+            catch (const runtime_error &)
             {
                 break;
             }
@@ -166,7 +166,7 @@ void Company::serveTables()
             group = tables.peek();
             tables.dequeue();
         }
-        catch (const std::runtime_error &)
+        catch (const runtime_error &)
         {
             break;
         }
