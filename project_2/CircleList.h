@@ -1,11 +1,13 @@
 /*
- * Name: Waylon Erlandson
+ * Name: Waylon Erlandson, Duong Minh, Duc Long Nguyen
  * Description: A generic circularly linked list class with add, remove, getCursor, traverse,
  * and size functionality
  * */
 #pragma once
 
 #include <vector>
+
+using namespace std;
 
 // Generic linked list node
 template <typename T>
@@ -22,7 +24,9 @@ template <typename T>
 class CLinkedList
 {
 public:
+    // Constructor initializes empty list.
     CLinkedList() : cursor(nullptr), n(0) {}
+    // Cleans up all nodes.
     ~CLinkedList()
     {
         // Removes elements until list is empty
@@ -31,18 +35,22 @@ public:
             remove();
         }
     }
+    // Checks if the list is empty.
     bool empty()
     {
         return cursor == nullptr;
     }
+    // Returns the current cursor node.
     CNode<T> *getCursor() const
     {
         return cursor;
     }
+    // Moves the cursor to the next node.
     void traverse()
     {
         cursor = cursor->next;
     }
+    // Adds a new element to the list.
     void add(const T &elem)
     {
         CNode<T> *v = new CNode<T>;
@@ -85,9 +93,9 @@ public:
         return n;
     }
 
-    std::vector<T> getAll() const
+    vector<T> getAll() const
     {
-        std::vector<T> result;
+        vector<T> result;
         if (cursor == nullptr)
             return result;
         CNode<T> *p = cursor->next;
