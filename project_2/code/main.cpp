@@ -1,6 +1,6 @@
 /*
  * Names: Waylon Erlandson, Minh Duong, Duc Long Nguyen
- * Description: Main program that lets the user choose between restaurant or bowling simulation.
+ * Description: Main program that lets the user choose between the restaurant or bowling simulation.
  */
 #include "Restaurant.h"
 #include "BowlingAlley.h"
