@@ -2,7 +2,7 @@
  * Names: Waylon Erlandson, Minh Duong, Duc Long Nguyen
  * Description: Parent class for businesses that manage arriving Groups, seating, serving tasks,
  * earnings, and termination conditions. Child classes customize the serving task.
-*/
+ */
 #pragma once
 
 #include <atomic>
@@ -14,6 +14,9 @@
 
 using namespace std;
 
+/* Class for a group that is initialized with a random size and difficulty.
+Size is used for calculating the bill and difficulty is used to determine
+the number of service tasks */
 class Group
 {
 public:

@@ -28,6 +28,7 @@ Group::Group()
     timeArrived = chrono::system_clock::now();
 }
 
+// Group copy constructor
 Group::Group(const Group &group)
     : size(group.size), difficulty(group.difficulty), timeArrived(group.timeArrived) {}
 
@@ -46,6 +47,7 @@ int Group::getDifficulty() const
     return difficulty;
 }
 
+// Company constructor
 Company::Company()
     : waitingLine(),
       tables(),
@@ -53,6 +55,7 @@ Company::Company()
       gameIsRunning(false),
       tableCapacity(10) {}
 
+// Company destructor
 Company::~Company()
 {
     // Ensure worker threads can't block forever if the object is destroyed.
@@ -100,6 +103,7 @@ float Company::getEarnings() const
     return earnings;
 }
 
+// Enqueues the First-In group from waiting line in tables when tables is below capacity
 void Company::fillTableOpenings()
 {
     // Consumer/producer thread:
@@ -124,6 +128,8 @@ void Company::fillTableOpenings()
     }
 }
 
+/* Checks whether the First-In waiting line group has been waiting for more than five seconds
+If so, stops the game */
 void Company::monitorWaitTimes()
 {
     // Monitor thread:
@@ -140,6 +146,8 @@ void Company::monitorWaitTimes()
     }
 }
 
+/* Creates a random arrival time for the next waiting line group
+and waits that amount of time before enqueueing the group */
 void Company::randomArrivalGeneration()
 {
     // Producer thread: random arrivals between 0.5 and 4 seconds.
@@ -147,11 +155,23 @@ void Company::randomArrivalGeneration()
     uniform_int_distribution<> distr(500, 4000);
     while (gameIsRunning.load())
     {
-        this_thread::sleep_for(chrono::milliseconds(distr(gen)));
+        // Sleep in short increments so the program can terminate promptly
+        // after stopGame() sets gameIsRunning to false.
+        const int delayMs = distr(gen);
+        const int stepMs = 50;
+        int elapsedMs = 0;
+        while (gameIsRunning.load() && elapsedMs < delayMs)
+        {
+            const int remaining = delayMs - elapsedMs;
+            const int thisStep = (remaining < stepMs) ? remaining : stepMs;
+            this_thread::sleep_for(chrono::milliseconds(thisStep));
+            elapsedMs += thisStep;
+        }
         waitingLine.enqueue(Group());
     }
 }
 
+// Helper function for calculating bill of First-In group for tables and performing service tasks for that group.
 void Company::serveTables()
 {
     // Consumer thread: takes groups from tables and runs the child-defined service task.
@@ -191,6 +211,7 @@ void Company::serveTables()
     }
 }
 
+// Ends the game
 void Company::stopGame()
 {
     bool expected = true;
@@ -203,4 +224,3 @@ void Company::stopGame()
     cout << fixed << setprecision(2) << endl
          << "Game over. Earnings: $" << earnings << endl;
 }
-

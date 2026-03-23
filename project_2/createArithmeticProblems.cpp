@@ -1,6 +1,6 @@
 /*
  * Names: Waylon Erlandson, Minh Duong, Duc Long Nguyen
- * Description: Creates a vector of arithmetic problems for numbers 1–12 using +, -, *, and /.
+ * Description: Creates a vector of arithmetic problems for each pair of numbers 1–12 using +, -, *, and /.
  * Division problems are only added when the result is a whole number.
  */
 #include "ArithmeticProblem.h"
@@ -23,7 +23,7 @@ vector<ArithmeticProblem> createArithmeticProblems()
                 {
                 case '/':
                 {
-                    // only include division if divisible
+                    // only include division if first number is divisible by second
                     if (i % j == 0)
                     {
                         ArithmeticProblem problem = ArithmeticProblem(i, j, oper, i / j);

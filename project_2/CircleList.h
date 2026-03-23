@@ -66,11 +66,12 @@ public:
         {
             v->next = cursor->next;
             cursor->next = v;
-            // New node assigned to cursor so cursor->next is First-In node for remove operation
+            // New node assigned to cursor so cursor->next is First-In node for remove operation for queue purposes
             cursor = v;
         }
         n += 1;
     }
+    // removes node
     void remove()
     {
         CNode<T> *old = cursor->next;
@@ -88,11 +89,12 @@ public:
         delete old;
         n -= 1;
     }
+    // Returns size of list
     int getSize() const
     {
         return n;
     }
-
+    // Returns all the nodes in the list in a vector
     vector<T> getAll() const
     {
         vector<T> result;

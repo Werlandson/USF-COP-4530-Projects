@@ -13,6 +13,7 @@
 
 using namespace std;
 
+/* Generic blocking queue with enqueue, dequeue, peek, getSize, and getAll operations */
 template <typename T>
 class Queue
 {
@@ -21,7 +22,8 @@ public:
     {
         {
             lock_guard<mutex> lock(m_);
-            if (closed_) return; // don't add if queue is closed
+            if (closed_)
+                return; // don't add if queue is closed
             queue.add(elem);
         }
         cv_.notify_one(); // wake up a waiting thread
@@ -77,8 +79,8 @@ public:
     }
 
 private:
-    mutable mutex m_;                // protects queue access
-    mutable condition_variable cv_;  // used for blocking
-    bool closed_ = false;            // stops queue when true
+    mutable mutex m_;               // protects queue access
+    mutable condition_variable cv_; // used for blocking
+    bool closed_ = false;           // stops queue when true
     CLinkedList<T> queue;
 };
