@@ -66,6 +66,7 @@ public:
 
         delete old;
     }
+
     int getSize() const
     {
         return size;
@@ -164,7 +165,7 @@ public:
             {
                 cout << currPlayer->elem.getName() << ", press '" << currPlayer->elem.getPlayerKey() << "' to pass: ";
                 auto start = std::chrono::steady_clock::now();
-                
+
                 char inputKey;
                 while (true)
                 {
@@ -180,7 +181,7 @@ public:
                         cout << "Wrong key! Try again: ";
                     }
                 }
-                
+
                 auto end = std::chrono::steady_clock::now();
                 std::chrono::duration<double> timeTouchingPotato = end - start;
                 currPlayer->elem.addTimeTouchingPotato(timeTouchingPotato.count());
