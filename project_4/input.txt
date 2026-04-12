@@ -1,0 +1,8 @@
+USF Starbucks Stadium Library Downtown
+USF Starbucks 0.27
+USF Stadium 1.8
+Starbucks Stadium 2.1
+Starbucks Library 0.5
+Stadium Library 0.9
+Library Downtown 0.3
+Downtown USF 2.5
