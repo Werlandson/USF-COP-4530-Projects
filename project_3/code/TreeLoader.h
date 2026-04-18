@@ -17,9 +17,11 @@ public:
     static bool loadFromFile(const std::string &inputPath, LinkedTree &tree, std::string &errorMessage);
 
 private:
-    // Extracts content information given the location of each tab
-    static bool splitTabFields(const std::string &line, std::string &level, std::string &position,
-                               std::string &edgeLabel, std::string &nodeContent);
+    // Parses the first line, supporting project description and test file formats
+    static bool parseRootLine(const std::string &line, std::string &rootContent, int &rootLevel, int &rootPosition);
+    // Extracts node fields from either tab-separated or space-separated lines
+    static bool splitNodeFields(const std::string &line, std::string &level, std::string &position,
+                                std::string &edgeLabel, std::string &nodeContent);
     // Trims a string
     static std::string trim(const std::string &value);
 };

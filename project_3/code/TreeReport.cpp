@@ -3,6 +3,7 @@
  * Descriptions: Writes information about a tree to the given file path according to the project description format.
  * */
 #include "TreeReport.h"
+#include "LinkedList.h"
 
 #include <fstream>
 #include <ostream>

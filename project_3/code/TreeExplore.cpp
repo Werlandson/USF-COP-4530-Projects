@@ -4,6 +4,7 @@
  * prints node content, ancestor, descendant, and sibling information.
  * */
 #include "TreeExplore.h"
+#include "LinkedTree.h"
 
 #include <iostream>
 #include <sstream>

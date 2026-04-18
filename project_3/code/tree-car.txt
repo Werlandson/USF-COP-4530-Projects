@@ -1,9 +1,0 @@
-Should I buy this car?
-1	1	Yes	Is the car in good working condition?
-2	2	Yes	Is the mileage under 120,000?
-3	3	Yes	Purchase the car
-3	4	No	Negotiate a lower price
-2	5	No	Will repairs cost less than your budget buffer?
-3	6	Yes	Buy only after mechanic approval
-3	7	No	Do not buy the car
-1	8	No	Do not buy the car

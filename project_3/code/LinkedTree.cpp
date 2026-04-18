@@ -4,6 +4,7 @@
  * relationships, tree type, size, number of nodes, number of internal nodes, and number of external nodes.
  * */
 #include "LinkedTree.h"
+#include "LinkedList.h"
 
 #include <algorithm>
 #include <cmath>
