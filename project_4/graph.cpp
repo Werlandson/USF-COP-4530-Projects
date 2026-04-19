@@ -5,6 +5,7 @@
  * according to user input.
  * */
 #include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -15,6 +16,68 @@
 #include <vector>
 
 using namespace std;
+
+// Twelve hyphens: visual separator used in the assignment menu (before/around the prompt)
+static const char *const MENU_RULE = "------------";
+
+// Strip leading/trailing ASCII whitespace from a token (used after splitting on tabs)
+static string trimWhitespace(const string &s)
+{
+    size_t start = 0;
+    while (start < s.size() && isspace(static_cast<unsigned char>(s[start])))
+        ++start;
+    size_t end = s.size();
+    while (end > start && isspace(static_cast<unsigned char>(s[end - 1])))
+        --end;
+    return s.substr(start, end - start);
+}
+
+// Split one text line on delim; empty fields after trim are skipped
+static vector<string> splitOnDelimiter(const string &line, char delim)
+{
+    vector<string> out;
+    string part;
+    stringstream ss(line);
+    while (getline(ss, part, delim))
+    {
+        string t = trimWhitespace(part);
+        if (!t.empty())
+            out.push_back(t);
+    }
+    return out;
+}
+
+// First file line: vertex names separated by tabs (handout) or by spaces (input.txt)
+static vector<string> parseVertexLine(const string &line)
+{
+    vector<string> names;
+    if (line.find('\t') != string::npos)
+        return splitOnDelimiter(line, '\t');
+    istringstream verticesLine(line);
+    string name;
+    while (verticesLine >> name)
+        names.push_back(name);
+    return names;
+}
+
+// One edge line: endpoint, endpoint, numeric label — tabs or spaces between fields
+static bool parseEdgeLine(const string &line, string &aName, string &bName, double &weight)
+{
+    if (line.find('\t') != string::npos)
+    {
+        vector<string> fields = splitOnDelimiter(line, '\t');
+        if (fields.size() >= 3)
+        {
+            aName = fields[0];
+            bName = fields[1];
+            istringstream wstream(fields[2]);
+            if (wstream >> weight)
+                return true;
+        }
+    }
+    istringstream edgeLine(line);
+    return static_cast<bool>(edgeLine >> aName >> bName >> weight);
+}
 
 class Edge; // Forward declaration so Vertex can store Edge pointers
 
@@ -150,7 +213,7 @@ public:
     // Default constructor for an empty graph
     Graph() = default;
 
-    // Build a graph from an input file
+    // Build a graph from an input file (line 1 = vertices; following lines = edges)
     explicit Graph(const string &filename)
     {
         ifstream input(filename);
@@ -161,34 +224,28 @@ public:
         }
 
         string line;
-        // First line contains all vertex names separated by whitespace
+        // Line 1 lists every vertex name (tab-separated or space-separated)
         if (getline(input, line))
         {
-            istringstream verticesLine(line);
-            string name;
-            // Insert every vertex token from the first line
-            while (verticesLine >> name)
+            vector<string> vertexNames = parseVertexLine(line);
+            for (const string &name : vertexNames)
                 insertVertex(name);
         }
 
-        // Remaining lines each describe one edge: vertexA vertexB label
+        // Each non-empty line adds one undirected edge (two names + label)
         while (getline(input, line))
         {
-            // Skip empty lines to keep parsing robust
             if (line.empty())
                 continue;
 
-            istringstream edgeLine(line);
-            string aName, bName;
-            double weight;
-            // Ignore malformed rows that do not have exactly 3 values
-            if (!(edgeLine >> aName >> bName >> weight))
+            string aName;
+            string bName;
+            double weight = 0.0;
+            if (!parseEdgeLine(line, aName, bName, weight))
                 continue;
 
-            // Resolve endpoint names to pointers before adding the edge
             Vertex *a = findVertex(aName);
             Vertex *b = findVertex(bName);
-            // Only insert if both endpoint vertices were declared in line 1
             if (a != nullptr && b != nullptr)
                 insertEdge(a, b, weight);
         }
@@ -337,11 +394,12 @@ public:
     }
 };
 
-// Print assignment menu options
+// Print twelve dashes, the prompt, twelve dashes again, then the four numbered actions
 static void printMenu()
 {
+    cout << MENU_RULE << endl;
     cout << "What would you like to do?" << endl;
-    cout << "------------" << endl;
+    cout << MENU_RULE << endl;
     cout << "1. Find edges incident on a vertex" << endl;
     cout << "2. Find a path in the graph" << endl;
     cout << "3. Insert an edge" << endl;
@@ -373,6 +431,7 @@ static void optionIncidentEdges(const Graph &graph)
 
     for (Edge *edge : incidents)
     {
+        // Neighbor across this edge (the endpoint that is not the queried vertex)
         Vertex *other = edge->opposite(vertex);
         cout << *(*vertex) << " to " << *(*other) << " is "
              << *(*edge) << " mi" << endl;
@@ -400,6 +459,7 @@ static void optionFindPath(const Graph &graph)
 
     for (size_t i = 0; i < path.size(); ++i)
     {
+        // Vertices only, joined by the handout phrase " to " (no edge weights)
         cout << *(*path[i]);
         if (i + 1 < path.size())
             cout << " to ";
@@ -476,15 +536,17 @@ static void optionEraseVertex(Graph &graph)
          << endl;
 }
 
-// Program entry: load graph file, then run menu loop forever
+// Program entry: load graph file, then repeat menu until the user types exit
 int main()
 {
+    // Opening prompts required by the assignment handout
     cout << "Hello!" << endl;
     cout << "Enter the file name: ";
     string fileName;
     cin >> fileName;
     cout << endl;
 
+    // Construct graph from disk (vertices on line 1; one edge per following line)
     Graph graph(fileName);
     if (graph.vertices().empty())
     {
@@ -493,20 +555,17 @@ int main()
     }
 
     cout << "Thank you. Your graph is ready." << endl;
-    cout << "------------" << endl;
 
     while (true)
     {
-        // Re-print menu after every completed action
+        // Each iteration shows dashes + prompt + options; user enters 1–4 or exit
         printMenu();
         string selection;
         cin >> selection;
 
-        // Allow an explicit exit command during menu selection.
         if (selection == "exit")
             break;
 
-        // Dispatch to the selected menu action
         if (selection == "1")
             optionIncidentEdges(graph);
         else if (selection == "2")
